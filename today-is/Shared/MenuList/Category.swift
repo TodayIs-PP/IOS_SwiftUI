@@ -8,23 +8,22 @@
 import SwiftUI
 
 struct Category: View {
+    
+    var categories: [String]
+    
     var body: some View {
-        HStack {
-            Text("한식")
-            Text("중식")
-            Text("양식")
-            Text("일식")
-            Text("분식")
-            Text("디저트")
-            Text("치킨")
-            Text("피자")
-            Text("패스트푸드")
+        ScrollView(.horizontal) {
+            HStack {
+                ForEach(categories, id: \.self) { category in
+                    Text(category)
+                }
+            }
         }
     }
 }
 
 struct Category_Previews: PreviewProvider {
     static var previews: some View {
-        Category()
+        Category(categories: ["전체", "한식", "중식", "양식", "일식", "디저트", "분식", "치킨", "피자", "패스트푸드"])
     }
 }
