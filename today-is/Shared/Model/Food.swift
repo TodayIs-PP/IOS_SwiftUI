@@ -10,7 +10,7 @@ import Foundation
 struct Food: Hashable, Codable {
     var _id: String
     var name: String
-    var image: String
+    var image: String?
     var kind1: String
     var kind2: String?
     var flavor1: String

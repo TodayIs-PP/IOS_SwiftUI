@@ -31,11 +31,11 @@ struct FoodImage: View {
     var body: some View {
         
         let image = getImage()
-        
+
         if let image = image {
             Image(uiImage: image)
                 .resizable()
-                .frame(width: 190, height: 200)
+                .frame(width: 185, height: 190)
                 .clipShape(Rectangle())
                 .overlay {
                     Rectangle().stroke(.black, lineWidth: 2)
@@ -44,7 +44,7 @@ struct FoodImage: View {
         else {
             Image("TodayIs_icon")
                 .resizable()
-                .frame(width: 190, height: 200)
+                .frame(width: 185, height: 190)
                 .clipShape(Rectangle())
                 .overlay {
                     Rectangle().stroke(.black, lineWidth: 2)

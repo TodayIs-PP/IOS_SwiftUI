@@ -8,7 +8,6 @@
 import Foundation
 
 struct GetCategories: Hashable, Decodable {
-    
     var message: String?
     var data: [String]?
 }

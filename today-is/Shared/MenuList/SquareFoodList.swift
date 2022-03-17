@@ -11,27 +11,19 @@ struct SquareFoodList: View {
     var foods: [Food]
     
     var body: some View {
+        let  chunkedFoods = foods.chunked(into: 2)
+        
         ScrollView {
             VStack {
-                ForEach(foods, id: \.self) { food in
-                    SquareFood(food: food)
+                let _ = print("out of foreach")
+                ForEach(0..<chunkedFoods.count, id:\.self) { index in
+                    HStack(alignment: .center) {
+                        let _ = print(chunkedFoods)
+                        ForEach(chunkedFoods[index], id: \._id) { food in
+                            SquareFood(food: food)
+                        }
+                    }
                 }
-//                HStack {
-//                    SquareFood()
-//                    SquareFood()
-//                }
-//                HStack {
-//                    SquareFood()
-//                    SquareFood()
-//                }
-//                HStack {
-//                    SquareFood()
-//                    SquareFood()
-//                }
-//                HStack {
-//                    SquareFood()
-//                    SquareFood()
-//                }
             }
         }
     }
@@ -39,6 +31,6 @@ struct SquareFoodList: View {
 
 struct SquareFoodList_Previews: PreviewProvider {
     static var previews: some View {
-        SquareFoodList(foods: [Food(_id: "adf", name: "adf", image: "adf", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0), Food(_id: "WKddas", name: "ㅁㅇㄹ", image: "이미지", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0),Food(_id: "adf", name: "adf", image: "adf", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0), Food(_id: "WKddas", name: "ㅁㅇㄹ", image: "이미지", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0),Food(_id: "adf", name: "adf", image: "adf", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0), Food(_id: "WKddas", name: "ㅁㅇㄹ", image: "이미지", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0)])
+        SquareFoodList(foods: [Food(_id: "adfdw", name: "adf", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0), Food(_id: "adfdw", name: "ㅁㅇㄹ", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0),Food(_id: "adf", name: "eeee", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0), Food(_id: "WKddas", name: "ㅁㅇㄹ", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0),Food(_id: "adf", name: "adf", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0), Food(_id: "WKddas", name: "ㅁㅇㄹ", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0)])
     }
 }

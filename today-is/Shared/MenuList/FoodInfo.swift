@@ -30,19 +30,12 @@ struct FoodInfo: View {
             }
             info += flavor1
         }
-        
-        
-        
-        
-//        if let notEmptyFlavor2 = flavor2 {
-//            info += notEmptyFlavor2
-//        }
         return info
     }
     
     var body: some View {
         ZStack {
-            Color.white.frame(width: 190, height: 100, alignment: Alignment.center).opacity(0.7)
+            Color.white.frame(width: 185, height: 95, alignment: Alignment.center).opacity(0.7)
             VStack {
                 Text(name).font(.title).padding(.bottom)
                 Text(getInfo())

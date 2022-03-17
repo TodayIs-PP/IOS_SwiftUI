@@ -21,6 +21,6 @@ struct SquareFood: View {
 
 struct SquareFood_Previews: PreviewProvider {
     static var previews: some View {
-        SquareFood(food: Food(_id: "adf", name: "adf", image: "adf", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0))
+        SquareFood(food: Food(_id: "adf", name: "adf", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0))
     }
 }
