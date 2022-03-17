@@ -12,8 +12,11 @@ struct AppBar: View {
         VStack {
             Text("오늘은").font(.title).bold()
             SelectButton()
-        }.overlay {
-            Rectangle().stroke(.black, lineWidth: 2)
+        }
+        .background(Color(red: 188 / 255, green: 246 / 255, blue: 179 / 255))
+        .overlay {
+            Rectangle()
+                .stroke(.black, lineWidth: 1)
         }
     }
 }

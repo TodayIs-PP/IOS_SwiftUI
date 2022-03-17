@@ -21,16 +21,15 @@ struct SelectButton: View {
                 isHome ? menuList.bold() : menuList
             }
             Spacer()
-            Rectangle().frame(width: 3, height: 20)
-            Spacer()
             Button(action: {
                 self.isHome = false
             }) {
                 isHome ? menuSelect : menuSelect.bold()
             }
             Spacer()
-        }.overlay {
-            Rectangle().stroke(.black, lineWidth: 2)
+        }
+        .overlay {
+            Rectangle().stroke(.black, lineWidth: 1)
         }
     }
 }

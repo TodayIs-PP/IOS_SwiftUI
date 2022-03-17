@@ -16,6 +16,12 @@ struct Category: View {
             HStack {
                 ForEach(categories, id: \.self) { category in
                     Text(category)
+                        .padding(.all, 3)
+                        .padding(.horizontal, 4)
+                        .background(
+                            RoundedRectangle(cornerRadius: 25)
+                                .fill(Color(red: 188 / 255, green: 246 / 255, blue: 179 / 255))
+                        )
                 }
             }
         }
