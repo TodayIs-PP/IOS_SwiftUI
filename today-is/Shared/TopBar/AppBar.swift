@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct AppBar: View {
+    @Binding var isHome: Bool
+    
     var body: some View {
         VStack {
             Text("오늘은").font(.title).bold()
-            SelectButton()
+            SelectButton(isHome: $isHome)
         }
         .background(Color(red: 188 / 255, green: 246 / 255, blue: 179 / 255))
         .overlay {
@@ -23,6 +25,6 @@ struct AppBar: View {
 
 struct AppBar_Previews: PreviewProvider {
     static var previews: some View {
-        AppBar()
+        AppBar(isHome: .constant(true))
     }
 }

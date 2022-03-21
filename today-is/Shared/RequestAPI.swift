@@ -27,7 +27,7 @@ class RequestAPI: ObservableObject {
     }
     
     func getCategory() {
-        if let url = URL(string: "http://localhost:3000/categories") {
+        if let url = URL(string: "http://localhost:3000/category/categories") {
           var request = URLRequest.init(url: url)
 
           request.httpMethod = "GET"

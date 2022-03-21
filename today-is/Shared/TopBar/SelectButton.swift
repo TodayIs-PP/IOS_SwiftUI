@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SelectButton: View {
-    @State var isHome = true
+    @Binding var isHome: Bool
     var menuList = Text("메뉴 리스트").foregroundColor(Color.black)
     var menuSelect = Text("메뉴 정하기").foregroundColor(Color.black)
     
@@ -36,6 +36,6 @@ struct SelectButton: View {
 
 struct SelectButton_Previews: PreviewProvider {
     static var previews: some View {
-        SelectButton()
+        SelectButton(isHome: .constant(true))
     }
 }
