@@ -9,17 +9,22 @@ import SwiftUI
 
 struct QuestionView: View {
     @StateObject private var api = RequestAPI.shard
+    @State var searchText = ""
     @State var category: String = "전체"
+    @State var foods: [Food] = []
     
     var body: some View {
         VStack {
             QuestionBox()
                 .padding(.vertical)
-            SearchView()
-            ResultList(foods: api.foodsByCategory)
+            SearchView(searchText: $searchText, foods: $foods)
+                .padding(.vertical)
+            Text("input: \(searchText)")
+            ResultList(foods: foods)
         }
         .onAppear{
-            api.getFoodsByCategory()
+            api.getFoodsByCategory(category: category)
+            foods = api.foodsByCategory
         }
     }
 }

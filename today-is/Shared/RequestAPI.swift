@@ -13,6 +13,7 @@ class RequestAPI: ObservableObject {
     @Published var categories: [String] = []
     @Published var foods: [Food] = []
     @Published var foodsByCategory: [Food] = []
+    @Published var searchFoods: [Food] = []
     
 //    func getHello() {
 //        do {
@@ -64,8 +65,10 @@ class RequestAPI: ObservableObject {
         }
     }
     
-    func getFoodsByCategory() {
-        if let url = URL(string: "http://localhost:3000/category/?name=전체") {
+    func getFoodsByCategory(category: String) {
+        let urlString = "http://localhost:3000/category/?name=\(category)"
+        let encodedString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        if let url = URL(string: encodedString) {
           var request = URLRequest.init(url: url)
 
           request.httpMethod = "GET"
@@ -78,6 +81,27 @@ class RequestAPI: ObservableObject {
                   print("Successfully resived getFoodsByCategory")
 //                  print(json)
                   self.foodsByCategory = json.data!
+              }
+          }.resume()
+        }
+    }
+    
+    func getSearchResult(searchText: String){
+        let urlString = "http://localhost:3000/food/search?searchFood=\(searchText)"
+        let encodedString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        if let url = URL(string: encodedString) {
+          var request = URLRequest.init(url: url)
+
+          request.httpMethod = "GET"
+
+          URLSession.shared.dataTask(with: request) { (data, response, error) in
+            guard let data = data else { return }
+              print(data)
+              let decoder = JSONDecoder()
+              if let json = try? decoder.decode(GetFoods.self, from: data) {
+                  print("Successfully resived getSearchResult")
+                  print(json)
+                  self.searchFoods = json.data!
               }
           }.resume()
         }
