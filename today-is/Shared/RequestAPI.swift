@@ -9,22 +9,22 @@ import Foundation
 
 class RequestAPI: ObservableObject {
     static let shard = RequestAPI()
-    @Published var hello: String = "byebye"
+//    @Published var hello: String = "byebye"
     @Published var categories: [String] = []
     @Published var foods: [Food] = []
+    @Published var foodsByCategory: [Food] = []
     
-    func getHello() -> String {
-        do {
-            let url = URL(string: "http://localhost:3000/hello")
-            let response = try String(contentsOf: url!)
-            
-            self.hello = response
-            print(response)
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-        return hello
-    }
+//    func getHello() {
+//        do {
+//            let url = URL(string: "http://localhost:3000/hello")
+//            let response = try String(contentsOf: url!)
+//
+//            self.hello = response
+//            print(response)
+//        } catch let error as NSError {
+//            print(error.localizedDescription)
+//        }
+//    }
     
     func getCategory() {
         if let url = URL(string: "http://localhost:3000/category/categories") {
@@ -59,6 +59,25 @@ class RequestAPI: ObservableObject {
                   print("Successfully resived getFoods")
 //                  print(json)
                   self.foods = json.data!
+              }
+          }.resume()
+        }
+    }
+    
+    func getFoodsByCategory() {
+        if let url = URL(string: "http://localhost:3000/category/?name=전체") {
+          var request = URLRequest.init(url: url)
+
+          request.httpMethod = "GET"
+
+          URLSession.shared.dataTask(with: request) { (data, response, error) in
+            guard let data = data else { return }
+              print(data)
+              let decoder = JSONDecoder()
+              if let json = try? decoder.decode(GetFoods.self, from: data) {
+                  print("Successfully resived getFoodsByCategory")
+//                  print(json)
+                  self.foodsByCategory = json.data!
               }
           }.resume()
         }

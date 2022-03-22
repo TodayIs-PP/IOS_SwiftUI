@@ -14,8 +14,8 @@ struct SearchView: View {
         VStack {
             SearchBar(text: $searchText)
                 .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
-            List {
-               // 검색 결과 넣기
+            VStack {
+                
             }
         }
         .onTapGesture {

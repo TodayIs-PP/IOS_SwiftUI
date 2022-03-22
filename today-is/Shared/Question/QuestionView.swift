@@ -8,11 +8,18 @@
 import SwiftUI
 
 struct QuestionView: View {
+    @StateObject private var api = RequestAPI.shard
+    @State var category: String = "전체"
+    
     var body: some View {
         VStack {
             QuestionBox()
                 .padding(.vertical)
             SearchView()
+            ResultList(foods: api.foodsByCategory)
+        }
+        .onAppear{
+            api.getFoodsByCategory()
         }
     }
 }
