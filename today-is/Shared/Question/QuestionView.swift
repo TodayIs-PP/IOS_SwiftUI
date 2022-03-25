@@ -17,14 +17,13 @@ struct QuestionView: View {
         VStack {
             QuestionBox()
                 .padding(.vertical)
-            SearchView(searchText: $searchText, foods: $foods)
+            SearchBar(text: $searchText, foods: $foods)
+                .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
                 .padding(.vertical)
-            Text("input: \(searchText)")
-            ResultList(foods: foods)
+            ResultList(foods: api.searchFoods)
         }
-        .onAppear{
-            api.getFoodsByCategory(category: category)
-            foods = api.foodsByCategory
+        .onTapGesture {
+            hideKeyboard()
         }
     }
 }
@@ -34,3 +33,11 @@ struct QuestionView_Previews: PreviewProvider {
         QuestionView()
     }
 }
+
+#if canImport(UIKit)
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+#endif
