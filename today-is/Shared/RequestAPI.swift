@@ -79,7 +79,7 @@ class RequestAPI: ObservableObject {
               let decoder = JSONDecoder()
               if let json = try? decoder.decode(GetFoods.self, from: data) {
                   print("Successfully resived getFoodsByCategory")
-//                  print(json)
+                  print(json)
                   self.foodsByCategory = json.data!
               }
           }.resume()

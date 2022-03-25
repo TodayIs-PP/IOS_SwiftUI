@@ -9,11 +9,13 @@ import SwiftUI
 
 struct MenuList: View {
     var categories: [String] = []
-    var foods: [Food] = []
+    @State var foods: [Food] = []
     
     var body: some View {
-        Category(categories: categories)
-        SquareFoodList(foods: foods)
+        VStack {
+            Category(categories: categories, foods: $foods)
+            SquareFoodList(foods: foods)
+        }
     }
 }
 
