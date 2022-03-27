@@ -14,7 +14,9 @@ struct FoodImage: View {
         
         AsyncImage(url: URL(string: "http://localhost:3000/\(imageName!)")) { phase in
             if let image = phase.image {
-                image // Displays the loaded image.
+                image
+                    .resizable()
+                    .scaledToFill()
             } else if phase.error != nil {
                 Image("TodayIs_icon")
                     .resizable()

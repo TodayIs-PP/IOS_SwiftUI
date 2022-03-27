@@ -10,48 +10,27 @@ import SwiftUI
 struct ResultDetailImage: View {
     var imageName: String?
     
-    func getImage() -> UIImage? {
-        if let notNilImageName = imageName {
-            let url = URL(string: "http://localhost:3000/" + notNilImageName)
-            var image: UIImage?
-
-            DispatchQueue.global().async {
-                let data = try? Data(contentsOf: url!)
-                DispatchQueue.main.async {
-                    image = UIImage(data: data!)
-                }
-            }
-            return image
-        }
-        else {
-            return nil
-        }
-    }
-    
     var body: some View {
         
-        let image = getImage()
-
-        if let image = image {
-            Image(uiImage: image)
-                .resizable()
-                .frame(width: 70, height: 70)
-                .clipShape(Rectangle())
-                .overlay {
-                    Rectangle().stroke(.black, lineWidth: 2)
-                }
-                .padding(.trailing, 20)
+        AsyncImage(url: URL(string: "http://localhost:3000/\(imageName!)")) { phase in
+            if let image = phase.image {
+                image
+                    .resizable()
+                    .scaledToFill()
+            } else if phase.error != nil {
+                Image("TodayIs_icon")
+                    .resizable()
+            } else {
+                Image("TodayIs_icon")
+                    .resizable()
+            }
         }
-        else {
-            Image("TodayIs_icon")
-                .resizable()
-                .frame(width: 70, height: 70)
-                .clipShape(Rectangle())
-                .overlay {
-                    Rectangle().stroke(.black, lineWidth: 2)
-                }
-                .padding(.trailing, 20)
+        .frame(width: 70, height: 70)
+        .clipShape(Rectangle())
+        .overlay {
+            Rectangle().stroke(.black, lineWidth: 2)
         }
+        .padding(.trailing, 20)
     }
 }
 
