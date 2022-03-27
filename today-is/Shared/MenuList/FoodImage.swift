@@ -10,45 +10,23 @@ import SwiftUI
 struct FoodImage: View {
     var imageName: String?
     
-    func getImage() -> UIImage? {
-        if let notNilImageName = imageName {
-            let url = URL(string: "http://localhost:3000/" + notNilImageName)
-            var image: UIImage?
-
-            DispatchQueue.global().async {
-                let data = try? Data(contentsOf: url!)
-                DispatchQueue.main.async {
-                    image = UIImage(data: data!)
-                }
-            }
-            return image
-        }
-        else {
-            return nil
-        }
-    }
-    
     var body: some View {
         
-        let image = getImage()
-
-        if let image = image {
-            Image(uiImage: image)
-                .resizable()
-                .frame(width: 185, height: 190)
-                .clipShape(Rectangle())
-                .overlay {
-                    Rectangle().stroke(.black, lineWidth: 2)
-                }
+        AsyncImage(url: URL(string: "http://localhost:3000/\(imageName!)")) { phase in
+            if let image = phase.image {
+                image // Displays the loaded image.
+            } else if phase.error != nil {
+                Image("TodayIs_icon")
+                    .resizable()
+            } else {
+                Image("TodayIs_icon")
+                    .resizable()
+            }
         }
-        else {
-            Image("TodayIs_icon")
-                .resizable()
-                .frame(width: 185, height: 190)
-                .clipShape(Rectangle())
-                .overlay {
-                    Rectangle().stroke(.black, lineWidth: 2)
-                }
+        .frame(width: 185, height: 190)
+        .clipShape(Rectangle())
+        .overlay {
+            Rectangle().stroke(.black, lineWidth: 2)
         }
     }
 }
