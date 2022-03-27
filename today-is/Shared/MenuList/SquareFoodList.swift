@@ -15,7 +15,6 @@ struct SquareFoodList: View {
         
         ScrollView {
             VStack {
-                let _ = print("out of foreach")
                 ForEach(0..<chunkedFoods.count, id:\.self) { index in
                     HStack(alignment: .center) {
                         let _ = print(chunkedFoods)

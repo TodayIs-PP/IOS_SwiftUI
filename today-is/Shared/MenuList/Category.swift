@@ -9,7 +9,6 @@ import SwiftUI
 
 struct Category: View {
     var categories: [String]
-    @Binding var foods: [Food]
     
     @StateObject private var api = RequestAPI.shard
     @State var chosedCategory: String = "전체"
@@ -21,10 +20,6 @@ struct Category: View {
                     Button(action: {
                         self.chosedCategory = category
                         api.getFoodsByCategory(category: category)
-                        foods = api.foodsByCategory
-                        print("button pushed")
-                        print(category)
-                        print(foods)
                     }) {
                         if chosedCategory == category {
                             Text(category)
@@ -54,6 +49,6 @@ struct Category: View {
 
 struct Category_Previews: PreviewProvider {
     static var previews: some View {
-        Category(categories: ["전체", "한식", "중식", "양식", "일식", "디저트", "분식", "치킨", "피자", "패스트푸드"], foods: .constant([Food(_id: "adf", name: "adf", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0), Food(_id: "WKddas", name: "ㅁㅇㄹ", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0),Food(_id: "adf", name: "eeee", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0), Food(_id: "WKddas", name: "ㅁㅇㄹ", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0),Food(_id: "adf", name: "adf", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0), Food(_id: "WKddas", name: "ㅁㅇㄹ", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0), Food(_id: "adf", name: "adf", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0), Food(_id: "WKddas", name: "ㅁㅇㄹ", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0),Food(_id: "adf", name: "eeee", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0), Food(_id: "WKddas", name: "ㅁㅇㄹ", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0),Food(_id: "adf", name: "adf", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0), Food(_id: "WKddas", name: "ㅁㅇㄹ", image: "1647220132863.jpeg", kind1: "we", kind2: "svd", flavor1: "cxv", flavor2: "erh", __v: 0)]))
+        Category(categories: ["전체", "한식", "중식", "양식", "일식", "디저트", "분식", "치킨", "피자", "패스트푸드"])
     }
 }

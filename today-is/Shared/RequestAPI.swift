@@ -34,13 +34,15 @@ class RequestAPI: ObservableObject {
           request.httpMethod = "GET"
 
           URLSession.shared.dataTask(with: request) { (data, response, error) in
-            guard let data = data else { return }
-              print(data)
-              let decoder = JSONDecoder()
-              if let json = try? decoder.decode(GetCategories.self, from: data) {
-                  print("Successfully resived getCategory")
-//                  print(json)
-                  self.categories = json.data!
+              DispatchQueue.main.sync {
+                  guard let data = data else { return }
+                  print(data)
+                  let decoder = JSONDecoder()
+                  if let json = try? decoder.decode(GetCategories.self, from: data) {
+                      print("Successfully resived getCategory")
+    //                  print(json)
+                      self.categories = json.data!
+                  }
               }
           }.resume()
         }
@@ -53,13 +55,15 @@ class RequestAPI: ObservableObject {
           request.httpMethod = "GET"
 
           URLSession.shared.dataTask(with: request) { (data, response, error) in
-            guard let data = data else { return }
-              print(data)
-              let decoder = JSONDecoder()
-              if let json = try? decoder.decode(GetFoods.self, from: data) {
-                  print("Successfully resived getFoods")
-//                  print(json)
-                  self.foods = json.data!
+              DispatchQueue.main.sync {
+                  guard let data = data else { return }
+                  print(data)
+                  let decoder = JSONDecoder()
+                  if let json = try? decoder.decode(GetFoods.self, from: data) {
+                      print("Successfully resived getFoods")
+    //                  print(json)
+                      self.foods = json.data!
+                  }
               }
           }.resume()
         }
@@ -74,13 +78,20 @@ class RequestAPI: ObservableObject {
           request.httpMethod = "GET"
 
           URLSession.shared.dataTask(with: request) { (data, response, error) in
-            guard let data = data else { return }
-              print(data)
-              let decoder = JSONDecoder()
-              if let json = try? decoder.decode(GetFoods.self, from: data) {
-                  print("Successfully resived getFoodsByCategory")
-                  print(json)
-                  self.foodsByCategory = json.data!
+              guard error == nil else {
+                  print("오류 : \(String(describing: error))")
+                  return
+              }
+              
+              DispatchQueue.main.sync {
+                  guard let data = data else { return }
+                  print(data)
+                  let decoder = JSONDecoder()
+                  if let json = try? decoder.decode(GetFoods.self, from: data) {
+                      print("Successfully resived getFoodsByCategory")
+    //                  print(json)
+                      self.foodsByCategory = json.data!
+                  }
               }
           }.resume()
         }

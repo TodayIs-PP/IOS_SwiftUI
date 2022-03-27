@@ -11,13 +11,12 @@ struct QuestionView: View {
     @StateObject private var api = RequestAPI.shard
     @State var searchText = ""
     @State var category: String = "전체"
-    @State var foods: [Food] = []
     
     var body: some View {
         VStack {
             QuestionBox()
                 .padding(.vertical)
-            SearchBar(text: $searchText, foods: $foods)
+            SearchBar(text: $searchText)
                 .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
                 .padding(.vertical)
             ResultList(foods: api.searchFoods)
