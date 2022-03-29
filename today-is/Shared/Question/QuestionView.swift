@@ -9,17 +9,26 @@ import SwiftUI
 
 struct QuestionView: View {
     @StateObject private var api = RequestAPI.shard
-    @State var searchText = ""
-    @State var category: String = "전체"
+    @State private var searchText = ""
+    @State private var category: String = "전체"
+    @State private var questionNum: Int = 0
+    @State private var chosedResponse: [String] = []
     
     var body: some View {
         VStack {
-            QuestionBox()
+            QuestionBox(questionNum: $questionNum)
                 .padding(.vertical)
-            SearchBar(text: $searchText)
-                .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
-                .padding(.vertical)
-            ResultList(foods: api.searchFoods)
+            if questionNum == 0 {
+                SearchBar(text: $searchText)
+                    .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
+                    .padding(.vertical)
+                ResultList(questionNum: $questionNum, chosedFoods: $chosedResponse, foods: api.searchFoods)
+            } else if questionNum == 1 {
+                ListView(questionNum: $questionNum, chosedResponse: $chosedResponse, items: api.categories)
+            } else if questionNum == 2 {
+                let _ = print(questionNum)
+                ListView(questionNum: $questionNum, chosedResponse: $chosedResponse, items: api.tastes)
+            }
         }
         .onTapGesture {
             hideKeyboard()

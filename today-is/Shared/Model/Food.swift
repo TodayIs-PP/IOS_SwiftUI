@@ -13,6 +13,7 @@ struct Food: Hashable, Codable {
     var image: String?
     var kind1: String
     var kind2: String?
+    var detailKind: String
     var flavor1: String
     var flavor2: String?
     var __v: Int
