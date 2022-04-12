@@ -52,22 +52,30 @@ class RequestAPI: ObservableObject {
     
     func getFoods() {
         if let url = URL(string: "http://localhost:3000/food/foods") {
-          var request = URLRequest.init(url: url)
+            var request = URLRequest.init(url: url)
+            var result: [Food]?
 
-          request.httpMethod = "GET"
-
-          URLSession.shared.dataTask(with: request) { (data, response, error) in
-              DispatchQueue.main.sync {
-                  guard let data = data else { return }
-                  print(data)
-                  let decoder = JSONDecoder()
-                  if let json = try? decoder.decode(GetFoods.self, from: data) {
-                      print("Successfully resived getFoods")
-    //                  print(json)
-                      self.foods = json.data!
-                  }
-              }
-          }.resume()
+            request.httpMethod = "GET"
+            let semaphore = DispatchSemaphore(value: 0)
+            
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                guard let data = data else { return }
+                print(data)
+                let decoder = JSONDecoder()
+                guard let json = try? decoder.decode(GetFoods.self, from: data) else {
+                    print("Fail to getFoods")
+                    return
+                }
+                print("Successfully resived getFoods")
+//                      print(json)
+                
+                result = json.data!
+                semaphore.signal()
+            }
+            
+            task.resume()
+            semaphore.wait()
+            self.foods = result!
         }
     }
     
