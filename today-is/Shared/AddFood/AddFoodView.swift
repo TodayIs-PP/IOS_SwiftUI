@@ -37,7 +37,7 @@ struct AddFoodView: View {
                     .frame(width: 185, height: 190)
                     .clipShape(Rectangle())
             })
-                .padding(.vertical, 20)
+            .padding(.vertical, 20)
             .sheet(isPresented: $imagePickerPresented,
                    onDismiss: loadImage,
                    content: { ImagePicker(image: $selectedImage) }
@@ -65,6 +65,15 @@ struct AddFoodView: View {
                             }
                         }
             TextField("정확한 종류를 입력해 주세요.(첫 번째 종류랑 중복되도 됩니다.)", text: $detailKind)
+            Button(action: {imagePickerPresented.toggle()}){
+                Text("추가")
+                    .font(.system(size: 20))
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 15))
+            .padding(EdgeInsets(top: 7, leading: 12, bottom: 7, trailing: 12))
+            .overlay {
+                RoundedRectangle(cornerRadius: 15).stroke(.blue, lineWidth: 2)
+            }
         }
         .padding(.horizontal, 40)
     }
