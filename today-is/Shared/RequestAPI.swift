@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import Alamofire
+import UIKit
 
 class RequestAPI: ObservableObject {
     static let shard = RequestAPI()
@@ -17,6 +19,14 @@ class RequestAPI: ObservableObject {
     @Published var tastes: [String] = []
     @Published var result: [Food] = []
     @Published var addFoodCategory: [String] = []
+    @Published var addFoodResponse: String = ""
+    @Published var savedImage: String = ""
+    
+    struct ImageFile {
+        let filename: String
+        let data: Data
+        let type: String
+    }
     
 //    func getHello() {
 //        do {
@@ -194,47 +204,72 @@ class RequestAPI: ObservableObject {
         }
     }
     
-    func addFood(body: [String: String], image: ImageFile?) {
-        let boundary = "Boundary-\(UUID().uuidString)"
-        guard let url = URL(string: "http://localhost:3000/food") else {
-            print("Fail to convert url")
-            return
+    func addFood(parameters: [String: String]) {
+        let requestURL = "http://localhost:3000/food/"
+        if let url = URL(string: requestURL) {
+            var request = URLRequest.init(url: url)
+            let jsonData = try! JSONSerialization.data(withJSONObject: parameters, options: [])
+            
+            request.httpMethod = "POST"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = jsonData
+            
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                DispatchQueue.main.sync {
+                    guard let data = data else { return }
+                    print(data)
+                    let decoder = JSONDecoder()
+                    if let json = try? decoder.decode(AddFood.self, from: data) {
+                        print("Successfully AddFood")
+    //                      print(json)
+                        self.addFoodResponse = json.message!
+                    }
+                }
+            }
+            
+            task.resume()
         }
-
-        var request = URLRequest.init(url: url)
-        request.httpMethod = "POST"
-
-        // Header
-        request.setValue("multipart/form-data; boundary\(boundary)",
-                forHTTPHeaderField: "Content-Type")
-
-        // Body
-        let bodyData = createBody(parameters: body, boundary: boundary, image: image)
-        request.httpBody = bodyData
     }
     
-    func createBody(parameters: [String: Any], boundary: String, image: ImageFile?) -> Data {
-        var body = Data()
-        let boundaryPrefix = "--\(boundary)\r\n"
-
-        for (key, value) in parameters {
-            body.append(boundaryPrefix.data(using: .utf8)!)
-          body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
-            body.append("\(value)\r\n".data(using: .utf8)!)
+    // 이미지 전송 api 추가하기
+    func uploadImage(imgData: UIImage?, completion: @escaping (String) -> Void)  {
+        guard let imgData = imgData else {
+            return
         }
-
-        // image를 첨부하지 않아도 작동할 수 있도록 if let을 통해 images 여부 확인
-        // requst의 key값의 이름에 따라 name의 값을 변경
-        if let visibleImage = image {
-            body.append(boundaryPrefix.data(using: .utf8)!)
-            body.append("Content-Disposition: form-data; name=\"images[]\"; filename=\"\(visibleImage.filename)\"\r\n".data(using: .utf8)!)
-            body.append("Content-Type: image/\(visibleImage.type)\r\n\r\n".data(using: .utf8)!)
-            body.append(visibleImage.data)
-            body.append("\r\n".data(using: .utf8)!)
+        
+        print(imgData.size)
+        let imageData = resizeImage(image: imgData, height: 190)
+        print(imageData.size)
+        
+        let image: Data? = imageData.pngData()
+        guard let image = image else {
+            return
         }
-
-        body.append(boundaryPrefix.data(using: .utf8)!)
-
-        return body
+        
+//        let urlComponent = URLComponents(string: "http://localhost:3000/image")
+        let header: HTTPHeaders = [ "Content-Type": "multipart/form-data" ]
+//        guard let url = urlComponent?.url else { return }
+        
+        AF.upload(multipartFormData: { multipartFormData in
+            multipartFormData.append(image, withName: "image", fileName: "foodImage.png", mimeType: "image/png")
+        }, to: "http://localhost:3000/image", method: .post, headers: header).responseDecodable(of: ImageUpload.self) { response in
+            print("Upload image Success")
+            guard let data = response.data else { return }
+            if let decodedData = try? JSONDecoder().decode(ImageUpload.self, from: data) {
+                print(decodedData)
+                self.savedImage = decodedData.message!
+                completion(decodedData.message!)
+            }
+        }
+    }
+    
+    func resizeImage(image: UIImage, height: CGFloat) -> UIImage {
+        let scale = height / image.size.height
+        let width = image.size.width * scale
+        UIGraphicsBeginImageContext(CGSize(width: width, height: height))
+        image.draw(in: CGRect(x: 0, y: 0, width: width, height: height))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage!
     }
 }

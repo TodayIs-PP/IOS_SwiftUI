@@ -8,21 +8,22 @@
 import SwiftUI
 
 struct AddFoodView: View {
+    @ObservedObject private var api = RequestAPI.shard
     @Binding var kindList: [String]
     @Binding var flavorList: [String]
-    @State var name: String = ""
-    @State var kind1: Int = 0
-    @State var kind2: Int = 0
-    @State var flavor1: Int = 0
-    @State var flavor2: Int = 1
-    @State var detailKind: String = ""
+    @State private var name: String = ""
+    @State private var kind1: Int = 0
+    @State private var kind2: Int = 0
+    @State private var flavor1: Int = 0
+    @State private var flavor2: Int = 1
+    @State private var detailKind: String = ""
     @State private var imagePickerPresented = false
     @State private var selectedImage: UIImage?
-    @State private var profileImage: Image?
+    @State private var foodImage: Image?
     
     func loadImage() {
         guard let selectedImage = selectedImage else { return }
-        profileImage = Image(uiImage: selectedImage)
+        foodImage = Image(uiImage: selectedImage)
     }
     
     var body: some View {
@@ -30,7 +31,7 @@ struct AddFoodView: View {
             Button(action: {
                 imagePickerPresented.toggle()
             }, label: {
-                let image = profileImage == nil ? Image(systemName: "plus.circle") : profileImage ?? Image(systemName: "plus.circle")
+                let image = foodImage == nil ? Image(systemName: "plus.circle") : foodImage ?? Image(systemName: "plus.circle")
                 image
                     .resizable()
                     .scaledToFill()
@@ -65,7 +66,13 @@ struct AddFoodView: View {
                             }
                         }
             TextField("정확한 종류를 입력해 주세요.(첫 번째 종류랑 중복되도 됩니다.)", text: $detailKind)
-            Button(action: {imagePickerPresented.toggle()}){
+            Button(action: {
+                // 이미지 업로드 api 추가하기
+                api.uploadImage(imgData: selectedImage, completion: { imageName in
+                    api.addFood(parameters: ["image": imageName, "name": name, "kind1": kindList[kind1], "kind2": kindList[kind2], "flavor1": flavorList[flavor1], "flavor2": flavorList[flavor2], "detailKind": detailKind])
+                })
+                
+            }){
                 Text("추가")
                     .font(.system(size: 20))
             }
