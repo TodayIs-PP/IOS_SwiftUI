@@ -107,7 +107,7 @@ class RequestAPI: ObservableObject {
             
             task.resume()
             semaphore.wait()
-            self.foods = result!
+//            self.foods = result!
         }
     }
     

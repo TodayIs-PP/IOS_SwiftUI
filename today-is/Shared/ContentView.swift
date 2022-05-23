@@ -16,9 +16,10 @@ struct ContentView: View {
             ScrollView {
                 VStack {
                     AppBar(isHome: $isHome)
-                    isHome ? AnyView(MenuList(categories: api.categories, foods: api.foods)) : AnyView(QuestionView())
+                    isHome ? AnyView(MenuList(categories: api.categories)) : AnyView(QuestionView())
                 }.onAppear {
-                    api.getFoods()
+                    api.getFoodsByCategory(category: "전체")
+//                    api.getFoods()
                     api.getCategory()
                 }
             }
