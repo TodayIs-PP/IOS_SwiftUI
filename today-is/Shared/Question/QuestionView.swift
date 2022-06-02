@@ -18,6 +18,20 @@ struct QuestionView: View {
         VStack {
             QuestionBox(questionNum: $questionNum)
                 .padding(.vertical)
+            HStack {
+                ForEach(0 ..< 6) {i in
+                    if i < chosedResponse.count {
+                        Circle()
+                            .fill(Color(red: 188 / 255, green: 246 / 255, blue: 179 / 255))
+                            .frame(width: 20.0, height: 20)
+                    }
+                    else {
+                        Circle()
+                            .stroke(Color(red: 188 / 255, green: 246 / 255, blue: 179 / 255))
+                            .frame(width: 20.0, height: 20)
+                    }
+                }
+            }
             if questionNum == 0 {
                 SearchBar(text: $searchText)
                     .padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
